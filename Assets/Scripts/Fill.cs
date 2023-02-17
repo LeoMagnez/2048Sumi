@@ -42,8 +42,8 @@ public class Fill : MonoBehaviour
         value *= 2;
         valueDisplay.text = value.ToString();
 
-        GameControllerManager.instance.WinningCheck(value);
-        //winning
+        GameControllerManager.instance.WinningCheck(value);//winning
+        
 
     }
 }
