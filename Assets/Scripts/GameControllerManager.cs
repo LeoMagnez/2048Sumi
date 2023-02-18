@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.VFX;
 
 public class GameControllerManager : MonoBehaviour
 {
@@ -23,11 +24,10 @@ public class GameControllerManager : MonoBehaviour
     bool hasWon;
 
 
-
-
     private void OnEnable()
     {
-        if(instance == null)
+
+        if (instance == null)
         {
             instance = this;
         }
