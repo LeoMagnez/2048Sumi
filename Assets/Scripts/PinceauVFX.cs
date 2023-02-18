@@ -28,7 +28,7 @@ public class PinceauVFX : MonoBehaviour
         yield return new WaitForSeconds(0.05f);
         newSmokeEffect.Stop();
 
-        //Destroy(newSmokeEffect.gameObject, 2f);
+        Destroy(newSmokeEffect.gameObject, 2f);
         
     }
 }
