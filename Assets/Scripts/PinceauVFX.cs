@@ -5,30 +5,18 @@ using UnityEngine.VFX;
 
 public class PinceauVFX : MonoBehaviour
 {
-    [SerializeField] VisualEffect smokeVFX;
-    [SerializeField] Transform smokePosition;
+    [SerializeField] SmokeVFX vfx;
 
     // Start is called before the first frame update
     void OnEnable()
     {
-        StartCoroutine(SpawnParticles());
+        vfx.StartVFXCoroutine();
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnDisable()
     {
-        
+        vfx.StartVFXCoroutine();
     }
 
-    IEnumerator SpawnParticles()
-    {
-        VisualEffect newSmokeEffect = Instantiate(smokeVFX, smokePosition);
 
-        newSmokeEffect.Play();
-        yield return new WaitForSeconds(0.05f);
-        newSmokeEffect.Stop();
-
-        Destroy(newSmokeEffect.gameObject, 2f);
-        
-    }
 }
