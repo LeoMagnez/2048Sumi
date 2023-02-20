@@ -64,6 +64,13 @@ public class GameControllerManager : MonoBehaviour
         canDrawHouse = false;
         canDrawRocks = false;
         canDrawTree = false;
+        pondMaterial.SetFloat("_DissolveAmount", 0f);
+        wallMaterial.SetFloat("_DissolveAmount", 0f);
+        houseMaterial.SetFloat("_DissolveAmount", 0f);
+        rocksMaterial.SetFloat("_DissolveAmount", 0f);
+        treeMaterial.SetFloat("_DissolveAmount", 0f);
+        treeMaskMaterial.SetFloat("_DissolveAmount", 0f);
+
     }
 
     // Update is called once per frame
