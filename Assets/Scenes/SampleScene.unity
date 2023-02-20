@@ -3693,6 +3693,7 @@ MonoBehaviour:
   canDrawHouse: 0
   canDrawRocks: 0
   canDrawTree: 0
+  currMaxValue: 4
 --- !u!4 &518652337
 Transform:
   m_ObjectHideFlags: 0
@@ -5428,7 +5429,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &832178555
 MonoBehaviour:
   m_ObjectHideFlags: 0
