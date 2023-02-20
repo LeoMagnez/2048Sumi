@@ -27,7 +27,6 @@ public class Cells : MonoBehaviour
     private void OnSlide(string whatWasSent)
     {
         CellCheck();
-        Debug.Log(whatWasSent);
 
         if(whatWasSent == "up")
         {
@@ -103,7 +102,7 @@ public class Cells : MonoBehaviour
                 }
                 else if(currentCell.down.fill != nextCell.fill)
                 {
-                    Debug.Log("not doubled");
+
                     nextCell.fill.transform.parent = currentCell.down.transform;
                     currentCell.down.fill = nextCell.fill;
                     nextCell.fill = null;
@@ -116,7 +115,7 @@ public class Cells : MonoBehaviour
             Cells nextCell = currentCell.down;
             while (nextCell.down != null && nextCell.fill == null)
             {
-                Debug.Log("here");
+
                 nextCell = nextCell.down;
             }
             if (nextCell.fill != null)
@@ -125,7 +124,7 @@ public class Cells : MonoBehaviour
                 currentCell.fill = nextCell.fill;
                 nextCell.fill = null;
                 SlideUp(currentCell);
-                Debug.Log("Slide to empty");
+
             }
         }
 
@@ -163,7 +162,7 @@ public class Cells : MonoBehaviour
                 }
                 else if (currentCell.left.fill != nextCell.fill)
                 {
-                    Debug.Log("not doubled");
+
                     nextCell.fill.transform.parent = currentCell.left.transform;
                     currentCell.left.fill = nextCell.fill;
                     nextCell.fill = null;
@@ -184,7 +183,7 @@ public class Cells : MonoBehaviour
                 currentCell.fill = nextCell.fill;
                 nextCell.fill = null;
                 SlideRight(currentCell);
-                Debug.Log("Slide to empty");
+
             }
         }
 
@@ -222,7 +221,7 @@ public class Cells : MonoBehaviour
                 }
                 else if (currentCell.up.fill != nextCell.fill)
                 {
-                    Debug.Log("not doubled");
+
                     nextCell.fill.transform.parent = currentCell.up.transform;
                     currentCell.up.fill = nextCell.fill;
                     nextCell.fill = null;
@@ -243,7 +242,7 @@ public class Cells : MonoBehaviour
                 currentCell.fill = nextCell.fill;
                 nextCell.fill = null;
                 SlideDown(currentCell);
-                Debug.Log("Slide to empty");
+
             }
         }
 
@@ -281,7 +280,7 @@ public class Cells : MonoBehaviour
                 }
                 else if (currentCell.right.fill != nextCell.fill)
                 {
-                    Debug.Log("not doubled");
+
                     nextCell.fill.transform.parent = currentCell.right.transform;
                     currentCell.right.fill = nextCell.fill;
                     nextCell.fill = null;
@@ -302,7 +301,7 @@ public class Cells : MonoBehaviour
                 currentCell.fill = nextCell.fill;
                 nextCell.fill = null;
                 SlideLeft(currentCell);
-                Debug.Log("Slide to empty");
+
             }
         }
 

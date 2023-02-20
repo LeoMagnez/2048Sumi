@@ -32,6 +32,7 @@ public class Fill : MonoBehaviour
             if(transform.parent.GetChild(0) != this.transform)
             {
                 Destroy(transform.parent.GetChild(0).gameObject);
+                
             }
             hasCombined = true;
         }
@@ -40,10 +41,16 @@ public class Fill : MonoBehaviour
     public void Double()
     {
         value *= 2;
+        if(value > GameControllerManager.instance.currMaxValue)
+        {
+            GameControllerManager.instance.currMaxValue = value;
+        }
         valueDisplay.text = value.ToString();
 
         GameControllerManager.instance.WinningCheck(value);//winning
         
 
     }
+
+    
 }

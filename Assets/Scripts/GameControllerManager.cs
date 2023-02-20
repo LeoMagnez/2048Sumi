@@ -44,6 +44,15 @@ public class GameControllerManager : MonoBehaviour
     public bool canDrawRocks;
     public bool canDrawTree;
 
+    bool hasDrawnPond;
+    bool hasDrawnWall;
+    bool hasDrawnHouse;
+    bool hasDrawnRocks;
+    bool hasDrawnTree;
+
+    public int currMaxValue = 4;
+    bool canPlay;
+
 
     private void OnEnable()
     {
@@ -64,6 +73,7 @@ public class GameControllerManager : MonoBehaviour
         canDrawHouse = false;
         canDrawRocks = false;
         canDrawTree = false;
+        canPlay = true;
         pondMaterial.SetFloat("_DissolveAmount", 0f);
         wallMaterial.SetFloat("_DissolveAmount", 0f);
         houseMaterial.SetFloat("_DissolveAmount", 0f);
@@ -76,39 +86,44 @@ public class GameControllerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (canPlay)
         {
-            SpawnFill();
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                SpawnFill();
+            }
+
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                ticker = 0;
+                isGameOver = 0;
+                slide("up");
+            }
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                ticker = 0;
+                isGameOver = 0;
+                slide("right");
+            }
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                ticker = 0;
+                isGameOver = 0;
+                slide("down");
+            }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                ticker = 0;
+                isGameOver = 0;
+                slide("left");
+            }
         }
 
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            ticker = 0;
-            isGameOver = 0;
-            slide("up");
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            ticker = 0;
-            isGameOver = 0;
-            slide("right");
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            ticker = 0;
-            isGameOver = 0;
-            slide("down");
-        }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            ticker = 0;
-            isGameOver = 0;
-            slide("left");
-        }
 
         if(pinceauAnimator != null)
         {
-            if (Input.GetKeyDown(KeyCode.A))
+            
+            if (currMaxValue == 128 && !hasDrawnWall)
             {
                 canPlayAnim = true;
                 StartCoroutine(SpawnPinceau());
@@ -116,7 +131,7 @@ public class GameControllerManager : MonoBehaviour
 
             }
 
-            if (Input.GetKeyDown(KeyCode.Z))
+            if (currMaxValue == 256 && !hasDrawnHouse)
             {
                 canPlayAnim = true;
                 StartCoroutine(SpawnPinceau());
@@ -124,7 +139,7 @@ public class GameControllerManager : MonoBehaviour
 
             }
 
-            if (Input.GetKeyDown(KeyCode.E))
+            if (currMaxValue == 512 && !hasDrawnRocks)
             {
                 canPlayAnim = true;
                 StartCoroutine(SpawnPinceau());
@@ -132,7 +147,7 @@ public class GameControllerManager : MonoBehaviour
 
             }
 
-            if (Input.GetKeyDown(KeyCode.R))
+            if (currMaxValue == 1024 && !hasDrawnTree)
             {
                 canPlayAnim = true;
                 StartCoroutine(SpawnPinceau());
@@ -140,7 +155,7 @@ public class GameControllerManager : MonoBehaviour
 
             }
 
-            if (Input.GetKeyDown(KeyCode.T))
+            if (currMaxValue == 64 && !hasDrawnPond)
             {
                 canPlayAnim = true;
 
@@ -150,27 +165,27 @@ public class GameControllerManager : MonoBehaviour
 
             }
 
-            if (canDrawPond)
+            if (canDrawPond && !hasDrawnPond)
             {
                 StartCoroutine(DrawPond());
             }
 
-            if (canDrawWall)
+            if (canDrawWall && !hasDrawnWall)
             {
                 StartCoroutine(DrawWall());
             }
 
-            if (canDrawHouse)
+            if (canDrawHouse && !hasDrawnHouse)
             {
                 StartCoroutine(DrawHouse());
             }
 
-            if (canDrawRocks)
+            if (canDrawRocks && !hasDrawnRocks)
             {
                 StartCoroutine(DrawRocks());
             }
 
-            if (canDrawTree)
+            if (canDrawTree && !hasDrawnTree)
             {
                 StartCoroutine(DrawTree());
             }
@@ -200,13 +215,13 @@ public class GameControllerManager : MonoBehaviour
 
         if (allCells[whichToSpawn].transform.childCount != 0) //SI L'EMPLACEMENT EST PRIS, RELANCE LA FONCTION
         {
-            Debug.Log(allCells[whichToSpawn].name + " is already filled");
+            
             SpawnFill();
             return;
         }
 
         float chance = UnityEngine.Random.Range(0f, 1f);
-        Debug.Log(chance);
+        
 
         if (chance < 0.2f) //SI CHANCE EST INFERIEUR A 0.2, RIEN NE SE PASSE
         {
@@ -216,19 +231,28 @@ public class GameControllerManager : MonoBehaviour
         {
 
             GameObject tempFill = Instantiate(fillPrefab, allCells[whichToSpawn].transform);
-            Debug.Log(2);
+            
             Fill temFillComp = tempFill.GetComponent<Fill>();
             allCells[whichToSpawn].GetComponent<Cells>().fill = temFillComp;
             temFillComp.FillValueUpdate(2);
+
+            if(temFillComp.value > currMaxValue)
+            {
+                currMaxValue = temFillComp.value; 
+            }
         }
         else //SINON, SPAWN UN 4
         {
 
             GameObject tempFill = Instantiate(fillPrefab, allCells[whichToSpawn].transform);
-            Debug.Log(4);
+            
             Fill temFillComp = tempFill.GetComponent<Fill>();
             allCells[whichToSpawn].GetComponent<Cells>().fill = temFillComp;
             temFillComp.FillValueUpdate(4);
+            if (temFillComp.value > currMaxValue)
+            {
+                currMaxValue = temFillComp.value;
+            }
         }
     }
 
@@ -238,17 +262,19 @@ public class GameControllerManager : MonoBehaviour
 
         if (allCells[whichToSpawn].transform.childCount != 0) //SI L'EMPLACEMENT EST PRIS, RELANCE LA FONCTION
         {
-            Debug.Log(allCells[whichToSpawn].name + " is already filled");
             SpawnFill();
             return;
         }
 
 
          GameObject tempFill = Instantiate(fillPrefab, allCells[whichToSpawn].transform);
-         Debug.Log(2);
          Fill temFillComp = tempFill.GetComponent<Fill>();
          allCells[whichToSpawn].GetComponent<Cells>().fill = temFillComp;
          temFillComp.FillValueUpdate(2);
+         if (temFillComp.value > currMaxValue)
+         {
+             currMaxValue = temFillComp.value;
+         }
     }
 
     public void GameOverCheck()
@@ -282,68 +308,82 @@ public class GameControllerManager : MonoBehaviour
 
     IEnumerator SpawnPinceau()
     {
-        if(canPlayAnim)
+        canPlay = false;
+        float clipLength = 0f;
+        if (canPlayAnim)
         {
             pinceau.SetActive(true);
+            
+            
+            clipLength = pinceauAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.length;
+
+
+            Debug.Log(clipLength);
         }
-        yield return new WaitForSeconds(15f);
+        yield return new WaitForSeconds(4f+ clipLength);
         pinceau.SetActive(false);
         canPlayAnim = false;
+        canPlay = true;
     }
 
     IEnumerator DrawPond()
     {
-
+        
         pondMaterial.SetFloat("_DissolveAmount", Mathf.Lerp(0f, 1f, timeElapsed / drawSpeed));
         timeElapsed += Time.deltaTime;
         yield return wait;
         timeElapsed = 0f;
         canDrawPond = false;
+        hasDrawnPond = true;
+
     }
 
     IEnumerator DrawWall()
     {
-
+        
         wallMaterial.SetFloat("_DissolveAmount", Mathf.Lerp(0f, 1f, timeElapsed / drawSpeed));
         timeElapsed += Time.deltaTime;
         yield return wait;
         timeElapsed = 0f;
         canDrawWall = false;
+        hasDrawnWall = true;
+
     }
 
     IEnumerator DrawHouse()
     {
-
+        
         houseMaterial.SetFloat("_DissolveAmount", Mathf.Lerp(0f, 1f, timeElapsed / drawSpeed));
         timeElapsed += Time.deltaTime;
         yield return wait;
         timeElapsed = 0f;
         canDrawHouse = false;
+        hasDrawnHouse = true;
+
     }
 
     IEnumerator DrawRocks()
     {
-
+        
         rocksMaterial.SetFloat("_DissolveAmount", Mathf.Lerp(0f, 1f, timeElapsed / drawSpeed));
         timeElapsed += Time.deltaTime;
         yield return wait;
         timeElapsed = 0f;
         canDrawRocks = false;
+        hasDrawnRocks = true;
+
     }
 
     IEnumerator DrawTree()
     {
-
+        
         treeMaterial.SetFloat("_DissolveAmount", Mathf.Lerp(0f, 1f, timeElapsed / drawSpeed));
         treeMaskMaterial.SetFloat("_DissolveAmount", Mathf.Lerp(0f, 1f, timeElapsed / drawSpeed));
         timeElapsed += Time.deltaTime;
         yield return wait;
         timeElapsed = 0f;
         canDrawTree = false;
-    }
+        hasDrawnTree = true;
 
-    public void PondTrigger(bool canPlay)
-    {
-        canDrawPond = true;
     }
 }
