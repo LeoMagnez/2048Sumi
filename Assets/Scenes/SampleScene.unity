@@ -3678,6 +3678,21 @@ MonoBehaviour:
   gameOverPanel: {fileID: 348627266}
   winningScore: 2048
   winningPanel: {fileID: 103900614}
+  pinceauAnimator: {fileID: 736111114}
+  pinceau: {fileID: 736111109}
+  pondMaterial: {fileID: 2100000, guid: c6e008d3d6d5efa45a636d99d8ea7f7c, type: 2}
+  wallMaterial: {fileID: 2100000, guid: b986b00ca31d3ef4a9c09ea4c6566ed0, type: 2}
+  houseMaterial: {fileID: 2100000, guid: 44e552fa0984eb743829cb45219f6881, type: 2}
+  rocksMaterial: {fileID: 2100000, guid: 7790e0cf9c4d2c14abb8224eb09e5315, type: 2}
+  treeMaterial: {fileID: 2100000, guid: 00cc93bbf7bfc3b46a04a691caf84496, type: 2}
+  treeMaskMaterial: {fileID: 2100000, guid: d46fb66008fa25446bcf2ac65f11bf46, type: 2}
+  drawSpeed: 3
+  timeElapsed: 0
+  canDrawPond: 0
+  canDrawWall: 0
+  canDrawHouse: 0
+  canDrawRocks: 0
+  canDrawTree: 0
 --- !u!4 &518652337
 Transform:
   m_ObjectHideFlags: 0
@@ -4644,6 +4659,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vfx: {fileID: 1058383547}
+--- !u!95 &736111114 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6366941605063662387, guid: 4960876fc44237a43950be28a6a92278,
+    type: 3}
+  m_PrefabInstance: {fileID: 783330812}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &737100518
 GameObject:
   m_ObjectHideFlags: 0
@@ -5285,7 +5306,7 @@ PrefabInstance:
     - target: {fileID: 4073487399444867230, guid: 4960876fc44237a43950be28a6a92278,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4960876fc44237a43950be28a6a92278, type: 3}

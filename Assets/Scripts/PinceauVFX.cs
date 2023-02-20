@@ -18,5 +18,30 @@ public class PinceauVFX : MonoBehaviour
         vfx.StartVFXCoroutine();
     }
 
+    public void DrawPond()
+    {
+        GameControllerManager.instance.canDrawPond = true;
+    }
+
+    public void DrawWall()
+    {
+        GameControllerManager.instance.canDrawWall = true;
+    }
+
+    public void DrawHouse()
+    {
+        GameControllerManager.instance.canDrawHouse = true;
+    }
+
+    public void DrawRocks()
+    {
+        GameControllerManager.instance.canDrawRocks = true;
+    }
+
+    public void DrawTree()
+    {
+        GameControllerManager.instance.canDrawTree = true;
+    }
+
 
 }

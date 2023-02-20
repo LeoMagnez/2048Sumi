@@ -23,6 +23,27 @@ public class GameControllerManager : MonoBehaviour
     [SerializeField] GameObject winningPanel;
     bool hasWon;
 
+    [SerializeField] Animator pinceauAnimator;
+    bool canPlayAnim = true;
+    [SerializeField] GameObject pinceau;
+
+    [SerializeField] Material pondMaterial;
+    [SerializeField] Material wallMaterial;
+    [SerializeField] Material houseMaterial;
+    [SerializeField] Material rocksMaterial;
+    [SerializeField] Material treeMaterial;
+    [SerializeField] Material treeMaskMaterial;
+
+    public float drawSpeed;
+    public float timeElapsed;
+    WaitForSeconds wait = new WaitForSeconds(3f);
+
+    public bool canDrawPond;
+    public bool canDrawWall;
+    public bool canDrawHouse;
+    public bool canDrawRocks;
+    public bool canDrawTree;
+
 
     private void OnEnable()
     {
@@ -38,6 +59,11 @@ public class GameControllerManager : MonoBehaviour
     {
         StartSpawnFill();
         StartSpawnFill();
+        canDrawPond = false;
+        canDrawWall = false;
+        canDrawHouse = false;
+        canDrawRocks = false;
+        canDrawTree = false;
     }
 
     // Update is called once per frame
@@ -72,6 +98,79 @@ public class GameControllerManager : MonoBehaviour
             isGameOver = 0;
             slide("left");
         }
+
+        if(pinceauAnimator != null)
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                canPlayAnim = true;
+                StartCoroutine(SpawnPinceau());
+                pinceauAnimator.SetTrigger("drawWall");
+
+            }
+
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                canPlayAnim = true;
+                StartCoroutine(SpawnPinceau());
+                pinceauAnimator.SetTrigger("drawHouse");
+
+            }
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                canPlayAnim = true;
+                StartCoroutine(SpawnPinceau());
+                pinceauAnimator.SetTrigger("drawRocks");
+
+            }
+
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                canPlayAnim = true;
+                StartCoroutine(SpawnPinceau());
+                pinceauAnimator.SetTrigger("drawTree");
+
+            }
+
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                canPlayAnim = true;
+
+                StartCoroutine(SpawnPinceau());
+                pinceauAnimator.SetTrigger("drawPond");
+
+
+            }
+
+            if (canDrawPond)
+            {
+                StartCoroutine(DrawPond());
+            }
+
+            if (canDrawWall)
+            {
+                StartCoroutine(DrawWall());
+            }
+
+            if (canDrawHouse)
+            {
+                StartCoroutine(DrawHouse());
+            }
+
+            if (canDrawRocks)
+            {
+                StartCoroutine(DrawRocks());
+            }
+
+            if (canDrawTree)
+            {
+                StartCoroutine(DrawTree());
+            }
+
+
+        }
+
     }
 
     public void SpawnFill()
@@ -172,5 +271,72 @@ public class GameControllerManager : MonoBehaviour
             winningPanel.SetActive(true);
             hasWon = true;
         }
+    }
+
+    IEnumerator SpawnPinceau()
+    {
+        if(canPlayAnim)
+        {
+            pinceau.SetActive(true);
+        }
+        yield return new WaitForSeconds(15f);
+        pinceau.SetActive(false);
+        canPlayAnim = false;
+    }
+
+    IEnumerator DrawPond()
+    {
+
+        pondMaterial.SetFloat("_DissolveAmount", Mathf.Lerp(0f, 1f, timeElapsed / drawSpeed));
+        timeElapsed += Time.deltaTime;
+        yield return wait;
+        timeElapsed = 0f;
+        canDrawPond = false;
+    }
+
+    IEnumerator DrawWall()
+    {
+
+        wallMaterial.SetFloat("_DissolveAmount", Mathf.Lerp(0f, 1f, timeElapsed / drawSpeed));
+        timeElapsed += Time.deltaTime;
+        yield return wait;
+        timeElapsed = 0f;
+        canDrawWall = false;
+    }
+
+    IEnumerator DrawHouse()
+    {
+
+        houseMaterial.SetFloat("_DissolveAmount", Mathf.Lerp(0f, 1f, timeElapsed / drawSpeed));
+        timeElapsed += Time.deltaTime;
+        yield return wait;
+        timeElapsed = 0f;
+        canDrawHouse = false;
+    }
+
+    IEnumerator DrawRocks()
+    {
+
+        rocksMaterial.SetFloat("_DissolveAmount", Mathf.Lerp(0f, 1f, timeElapsed / drawSpeed));
+        timeElapsed += Time.deltaTime;
+        yield return wait;
+        timeElapsed = 0f;
+        canDrawRocks = false;
+    }
+
+    IEnumerator DrawTree()
+    {
+
+        treeMaterial.SetFloat("_DissolveAmount", Mathf.Lerp(0f, 1f, timeElapsed / drawSpeed));
+        treeMaskMaterial.SetFloat("_DissolveAmount", Mathf.Lerp(0f, 1f, timeElapsed / drawSpeed));
+        timeElapsed += Time.deltaTime;
+        yield return wait;
+        timeElapsed = 0f;
+        canDrawTree = false;
+    }
+
+    public void PondTrigger(bool canPlay)
+    {
+        canDrawPond = true;
     }
 }
