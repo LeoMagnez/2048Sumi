@@ -311,6 +311,11 @@ public class GameControllerManager : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
 
 
     IEnumerator SpawnPinceau()
