@@ -46,8 +46,6 @@ public class Fill : MonoBehaviour
             GameControllerManager.instance.currMaxValue = value;
         }
         valueDisplay.text = value.ToString();
-
-        GameControllerManager.instance.WinningCheck(value);//winning
         
 
     }

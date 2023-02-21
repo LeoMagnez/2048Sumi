@@ -53,6 +53,13 @@ public class GameControllerManager : MonoBehaviour
     public int currMaxValue = 4;
     bool canPlay;
 
+    [SerializeField] GameObject progressiveScene;
+    [SerializeField] GameObject endScene;
+    public bool endSceneAnim;
+    bool endSceneAppear;
+    [SerializeField] GameObject makeshiftLight;
+    [SerializeField] Light endLight;
+
 
     private void OnEnable()
     {
@@ -73,6 +80,7 @@ public class GameControllerManager : MonoBehaviour
         canDrawHouse = false;
         canDrawRocks = false;
         canDrawTree = false;
+        endSceneAppear = false;
         canPlay = true;
         pondMaterial.SetFloat("_DissolveAmount", 0f);
         wallMaterial.SetFloat("_DissolveAmount", 0f);
@@ -165,6 +173,12 @@ public class GameControllerManager : MonoBehaviour
 
             }
 
+            if(currMaxValue == 2048)
+            {
+                endSceneAppear = true;
+                EndScene();
+            }
+
             if (canDrawPond && !hasDrawnPond)
             {
                 StartCoroutine(DrawPond());
@@ -188,6 +202,11 @@ public class GameControllerManager : MonoBehaviour
             if (canDrawTree && !hasDrawnTree)
             {
                 StartCoroutine(DrawTree());
+            }
+
+            if (Input.GetKeyDown(KeyCode.F) && canPlay)
+            {
+                currMaxValue = currMaxValue * 2;
             }
 
 
@@ -292,19 +311,7 @@ public class GameControllerManager : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
-    public void WinningCheck(int highestFill)
-    {
-        if (hasWon)
-        {
-            return;
-        }
 
-        if(highestFill == winningScore)
-        {
-            winningPanel.SetActive(true);
-            hasWon = true;
-        }
-    }
 
     IEnumerator SpawnPinceau()
     {
@@ -385,5 +392,36 @@ public class GameControllerManager : MonoBehaviour
         canDrawTree = false;
         hasDrawnTree = true;
 
+    }
+
+    public void EndScene()
+    {
+        if (endSceneAppear)
+        {
+            endLight.gameObject.SetActive(true);
+            makeshiftLight.SetActive(true);
+
+            if (endSceneAnim)
+            {
+                canPlay = false;
+                progressiveScene.SetActive(false);
+                endScene.SetActive(true);
+                makeshiftLight.SetActive(false);
+                endLight.intensity = Mathf.Lerp(endLight.intensity, 1f, timeElapsed / 200f);
+                timeElapsed += Time.deltaTime;
+
+            }
+
+            if(endLight.intensity <= 2f)
+            {
+                StartCoroutine(WinningPanel());
+            }
+        }
+    }
+
+    IEnumerator WinningPanel()
+    {
+        yield return new WaitForSeconds(6f);
+        winningPanel.SetActive(true);
     }
 }
