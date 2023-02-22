@@ -31,6 +31,7 @@ public class Fill : MonoBehaviour
         {
             if(transform.parent.GetChild(0) != this.transform)
             {
+                GameControllerManager.instance.SpawnDroplets(transform.parent.GetChild(0).position);
                 Destroy(transform.parent.GetChild(0).gameObject);
                 
             }

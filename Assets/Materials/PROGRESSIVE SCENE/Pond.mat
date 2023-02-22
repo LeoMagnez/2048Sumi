@@ -106,7 +106,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DissolveAmount: 0.3612421
+    - _DissolveAmount: 0
     - _DissolveScale: 0.01
     - _DstBlend: 0
     - _EnableExternalAlpha: 0

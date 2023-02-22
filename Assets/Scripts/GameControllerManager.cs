@@ -34,6 +34,8 @@ public class GameControllerManager : MonoBehaviour
     [SerializeField] Material treeMaterial;
     [SerializeField] Material treeMaskMaterial;
 
+    public ParticleSystem inkDroplets;
+
     public float drawSpeed;
     public float timeElapsed;
     WaitForSeconds wait = new WaitForSeconds(3f);
@@ -59,6 +61,12 @@ public class GameControllerManager : MonoBehaviour
     bool endSceneAppear;
     [SerializeField] GameObject makeshiftLight;
     [SerializeField] Light endLight;
+
+    [SerializeField] GameObject cheatPanel;
+    [SerializeField] TextMeshProUGUI currMaxValueDisplay;
+    public bool canCheat;
+
+    [SerializeField] GameObject pausePanel;
 
 
     private void OnEnable()
@@ -89,6 +97,7 @@ public class GameControllerManager : MonoBehaviour
         treeMaterial.SetFloat("_DissolveAmount", 0f);
         treeMaskMaterial.SetFloat("_DissolveAmount", 0f);
 
+
     }
 
     // Update is called once per frame
@@ -105,24 +114,32 @@ public class GameControllerManager : MonoBehaviour
             {
                 ticker = 0;
                 isGameOver = 0;
+                AudioManager.instance.randomPitch = true;
+                AudioManager.instance.PlaySFX("SmallStroke");
                 slide("up");
             }
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
                 ticker = 0;
                 isGameOver = 0;
+                AudioManager.instance.randomPitch = true;
+                AudioManager.instance.PlaySFX("SmallStroke");
                 slide("right");
             }
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
                 ticker = 0;
                 isGameOver = 0;
+                AudioManager.instance.randomPitch = true;
+                AudioManager.instance.PlaySFX("SmallStroke");
                 slide("down");
             }
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 ticker = 0;
                 isGameOver = 0;
+                AudioManager.instance.randomPitch = true;
+                AudioManager.instance.PlaySFX("SmallStroke");
                 slide("left");
             }
         }
@@ -204,11 +221,29 @@ public class GameControllerManager : MonoBehaviour
                 StartCoroutine(DrawTree());
             }
 
-            if (Input.GetKeyDown(KeyCode.F) && canPlay)
+            if (Input.GetKeyDown(KeyCode.D))
             {
-                currMaxValue = currMaxValue * 2;
+                canCheat = true;
             }
 
+            if (canCheat)
+            {
+                cheatPanel.SetActive(true);
+                currMaxValueDisplay.text = currMaxValue.ToString();
+
+                if (Input.GetKeyDown(KeyCode.F) && canPlay)
+                {
+                    currMaxValue = currMaxValue * 2;
+
+                }
+
+            }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                canPlay = false;
+                pausePanel.SetActive(true);
+            }
 
         }
 
@@ -316,6 +351,13 @@ public class GameControllerManager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
+    public void ResumeGame()
+    {
+        Debug.Log("click");
+        pausePanel.SetActive(false);
+        canPlay = true;
+    }
+
 
 
     IEnumerator SpawnPinceau()
@@ -340,7 +382,7 @@ public class GameControllerManager : MonoBehaviour
 
     IEnumerator DrawPond()
     {
-        
+        AudioManager.instance.PlaySFX("DrawingAppear");
         pondMaterial.SetFloat("_DissolveAmount", Mathf.Lerp(0f, 1f, timeElapsed / drawSpeed));
         timeElapsed += Time.deltaTime;
         yield return wait;
@@ -352,7 +394,7 @@ public class GameControllerManager : MonoBehaviour
 
     IEnumerator DrawWall()
     {
-        
+        AudioManager.instance.PlaySFX("DrawingAppear");
         wallMaterial.SetFloat("_DissolveAmount", Mathf.Lerp(0f, 1f, timeElapsed / drawSpeed));
         timeElapsed += Time.deltaTime;
         yield return wait;
@@ -364,7 +406,7 @@ public class GameControllerManager : MonoBehaviour
 
     IEnumerator DrawHouse()
     {
-        
+        AudioManager.instance.PlaySFX("DrawingAppear");
         houseMaterial.SetFloat("_DissolveAmount", Mathf.Lerp(0f, 1f, timeElapsed / drawSpeed));
         timeElapsed += Time.deltaTime;
         yield return wait;
@@ -376,7 +418,7 @@ public class GameControllerManager : MonoBehaviour
 
     IEnumerator DrawRocks()
     {
-        
+        AudioManager.instance.PlaySFX("DrawingAppear");
         rocksMaterial.SetFloat("_DissolveAmount", Mathf.Lerp(0f, 1f, timeElapsed / drawSpeed));
         timeElapsed += Time.deltaTime;
         yield return wait;
@@ -388,7 +430,7 @@ public class GameControllerManager : MonoBehaviour
 
     IEnumerator DrawTree()
     {
-        
+        AudioManager.instance.PlaySFX("DrawingAppear");
         treeMaterial.SetFloat("_DissolveAmount", Mathf.Lerp(0f, 1f, timeElapsed / drawSpeed));
         treeMaskMaterial.SetFloat("_DissolveAmount", Mathf.Lerp(0f, 1f, timeElapsed / drawSpeed));
         timeElapsed += Time.deltaTime;
@@ -428,5 +470,11 @@ public class GameControllerManager : MonoBehaviour
     {
         yield return new WaitForSeconds(6f);
         winningPanel.SetActive(true);
+    }
+
+    public void SpawnDroplets(Vector3 parentPosition)
+    {
+        inkDroplets.transform.position = parentPosition;
+        inkDroplets.Play();
     }
 }
