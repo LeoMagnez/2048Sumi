@@ -457,6 +457,7 @@ public class GameControllerManager : MonoBehaviour
                 endLight.intensity = Mathf.Lerp(endLight.intensity, 1f, timeElapsed / 200f);
                 timeElapsed += Time.deltaTime;
 
+
             }
 
             if(endLight.intensity <= 2f)
